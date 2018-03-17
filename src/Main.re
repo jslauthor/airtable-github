@@ -19,6 +19,14 @@ let tableName =
   Js.Dict.get(Node.Process.process##env, "AIRTABLE_TABLE_NAME")
   |> raiseIfNone("Airtable database id missing");
 
+let serverPort =
+  Js.Dict.get(Node.Process.process##env, "PORT")
+  |> (
+    fun
+    | Some(value) => int_of_string(value)
+    | None => 3000
+  );
+
 let base = Airtable.(makeConfig(~apiKey, ()) |> airtable |> base(dbId));
 
 let table = base(. tableName);
@@ -104,4 +112,4 @@ let onListen = (port, e) =>
   | _ => Js.log @@ "Listening at http://127.0.0.1:" ++ string_of_int(port)
   };
 
-App.listen(app, ~onListen=onListen(3000), ());
+App.listen(app, ~port=serverPort, ~onListen=onListen(serverPort), ());

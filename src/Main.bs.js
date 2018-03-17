@@ -8,6 +8,7 @@ var Js_dict = require("bs-platform/lib/js/js_dict.js");
 var Process = require("process");
 var Airtable = require("airtable");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
+var Caml_format = require("bs-platform/lib/js/caml_format.js");
 var Json_decode = require("@glennsl/bs-json/src/Json_decode.bs.js");
 var Js_primitive = require("bs-platform/lib/js/js_primitive.js");
 var GitHub$AirtableGithub = require("./GitHub.bs.js");
@@ -29,6 +30,10 @@ var apiKey = raiseIfNone("Airtable API key missing", Js_primitive.undefined_to_o
 var dbId = raiseIfNone("Airtable database id missing", Js_primitive.undefined_to_opt(Process.env["AIRTABLE_DB_ID"]));
 
 var tableName = raiseIfNone("Airtable database id missing", Js_primitive.undefined_to_opt(Process.env["AIRTABLE_TABLE_NAME"]));
+
+var param = Process.env["PORT"];
+
+var serverPort = param !== undefined ? Caml_format.caml_int_of_string(param) : 3000;
 
 var base = new Airtable({
         apiKey: apiKey
@@ -144,8 +149,8 @@ function onListen(port, e) {
   
 }
 
-Express.App[/* listen */19](app, /* None */0, /* Some */[(function (param) {
-          return onListen(3000, param);
+Express.App[/* listen */19](app, /* Some */[serverPort], /* Some */[(function (param) {
+          return onListen(serverPort, param);
         })], /* () */0);
 
 exports.$great$great = $great$great;
@@ -153,6 +158,7 @@ exports.raiseIfNone = raiseIfNone;
 exports.apiKey = apiKey;
 exports.dbId = dbId;
 exports.tableName = tableName;
+exports.serverPort = serverPort;
 exports.base = base;
 exports.table = table;
 exports.update = update;

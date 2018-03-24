@@ -6,12 +6,7 @@
     "start": "bsb -make-world -w",
     "clean": "bsb -clean-world"
   },
-  "keywords": [
-    "BuckleScript",
-    "airtable",
-    "github",
-    "reason"
-  ],
+  "keywords": ["BuckleScript", "airtable", "github", "reason"],
   "author": "",
   "license": "MIT",
   "devDependencies": {
